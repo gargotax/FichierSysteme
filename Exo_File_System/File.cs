@@ -17,5 +17,12 @@ namespace Exo_File_System
             Name = name;
             Size = size;
         }
+
+        public List<string> GetFullPath(string currentPath = "")
+        {
+            return GetFullPath();
+        }
+
+
     }
 }

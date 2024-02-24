@@ -26,17 +26,44 @@ namespace Exo_File_System
             Size += file.Size;
         }
 
+        public void RemoveFilesFromFolder(File file)
+        {
+            FilesAndFolders.Remove(file);
+            Size -= file.Size;
+        }
+
         public void AddFoldersToFolder (Folder folder)
         {
             FilesAndFolders.Add(folder);
+            Size += folder.Size;
         }
 
-        public List<string> GetFullPath()
+        public void RemoveFoldersFromoFolder(Folder folder)
         {
-            List<string> result = new List<string> ();
-            foreach (ICommonComponent file in FilesAndFolders)
+            FilesAndFolders.Remove(folder);
+            Size -= folder.Size;
+        }
+
+        public List<string> GetFullPath(string currentPath = "")
+        {
+            List<string> result = new List<string>();
+
+            foreach (ICommonComponent element in FilesAndFolders)
             {
-                 result =file.Name;
+                if (element is ICommonComponent commonComponent)
+                {
+                    string elementPath = currentPath + "/" + commonComponent.Name;
+                    result.Add(elementPath);
+
+                    if (element is Folder folder)
+                    {
+                       result.AddRange(folder.GetFullPath(elementPath));
+                    }
+                    else if (element is File file)
+                    {
+                        result.AddRange(file.GetFullPath(elementPath));
+                    }
+                }
             }
 
             return result;
